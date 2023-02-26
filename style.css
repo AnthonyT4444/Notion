@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap");
 
 /* General */
 
 body {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   background-color: ##3d3d3d;
 }
 
@@ -37,7 +37,7 @@ button:focus {
 /* Clock Body */
 
 .clock-container {
-  background-color: rgb(0, 0, 0); 
+  background-color: rgb(0, 0, 0);
   width: 350px;
   border-radius: 20px;
   padding: 30px;
@@ -96,13 +96,13 @@ button:focus {
   flex-direction: row;
   justify-content: center;
   width: 140px;
-  height:60px;
+  height: 60px;
 }
 
-.break-container, 
+.break-container,
 .session-container {
   text-align: center;
-/*   display: inline-block; */
+  /*   display: inline-block; */
   border: 2px solid rgb(110, 110, 110);
   padding: 10px;
   border-radius: 10px;
