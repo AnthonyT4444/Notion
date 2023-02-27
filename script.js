@@ -15,8 +15,8 @@ class App extends React.Component {
       timeLeft: SESSIONLEN * 60, // sec
       timerType: SESSION,
       isTimerRunning: false,
-      intervalId: ""
-    };
+      intervalId: "" };
+
     this.changeTimerType = this.changeTimerType.bind(this);
     this.handleDecrementBreak = this.handleDecrementBreak.bind(this);
     this.handleIncrementBreak = this.handleIncrementBreak.bind(this);
@@ -28,17 +28,17 @@ class App extends React.Component {
 
   changeTimerType() {
     this.setState(
-      {
-        timerType: this.state.timerType === SESSION ? BREAK : SESSION,
-        timeLeft:
-          this.state.timerType === SESSION
-            ? this.state.breakLen * 60
-            : this.state.sessionLen * 60
-      },
-      () => {
-        this.runTimer();
-      }
-    );
+    {
+      timerType: this.state.timerType === SESSION ? BREAK : SESSION,
+      timeLeft:
+      this.state.timerType === SESSION ?
+      this.state.breakLen * 60 :
+      this.state.sessionLen * 60 },
+
+    () => {
+      this.runTimer();
+    });
+
   }
 
   handleDecrementBreak() {
@@ -46,10 +46,10 @@ class App extends React.Component {
       this.setState({
         breakLen: this.state.breakLen - 1,
         timeLeft:
-          this.state.timerType === BREAK
-            ? (this.state.breakLen - 1) * 60
-            : this.state.timeLeft
-      });
+        this.state.timerType === BREAK ?
+        (this.state.breakLen - 1) * 60 :
+        this.state.timeLeft });
+
     }
   }
 
@@ -58,10 +58,10 @@ class App extends React.Component {
       this.setState({
         breakLen: this.state.breakLen + 1,
         timeLeft:
-          this.state.timerType === BREAK
-            ? (this.state.breakLen + 1) * 60
-            : this.state.timeLeft
-      });
+        this.state.timerType === BREAK ?
+        (this.state.breakLen + 1) * 60 :
+        this.state.timeLeft });
+
     }
   }
 
@@ -70,10 +70,10 @@ class App extends React.Component {
       this.setState({
         sessionLen: this.state.sessionLen - 1,
         timeLeft:
-          this.state.timerType === SESSION
-            ? (this.state.sessionLen - 1) * 60
-            : this.state.timeLeft
-      });
+        this.state.timerType === SESSION ?
+        (this.state.sessionLen - 1) * 60 :
+        this.state.timeLeft });
+
     }
   }
 
@@ -82,10 +82,10 @@ class App extends React.Component {
       this.setState({
         sessionLen: this.state.sessionLen + 1,
         timeLeft:
-          this.state.timerType === SESSION
-            ? (this.state.sessionLen + 1) * 60
-            : this.state.timeLeft
-      });
+        this.state.timerType === SESSION ?
+        (this.state.sessionLen + 1) * 60 :
+        this.state.timeLeft });
+
     }
   }
 
@@ -97,8 +97,8 @@ class App extends React.Component {
       timeLeft: SESSIONLEN * 60, // sec
       timerType: SESSION,
       isTimerRunning: false,
-      intervalId: ""
-    });
+      intervalId: "" });
+
     this.beepSound.pause();
     this.beepSound.currentTime = 0;
   }
@@ -106,23 +106,23 @@ class App extends React.Component {
   runTimer() {
     let intervalId = setInterval(() => {
       this.setState(
-        {
-          timeLeft: this.state.timeLeft - 1
-        },
-        () => {
-          if (this.state.timeLeft === 0) {
-            this.beepSound.play();
-          }
-          if (this.state.timeLeft < 0) {
-            if (this.state.intervalId) clearInterval(this.state.intervalId);
-            this.changeTimerType();
-          }
+      {
+        timeLeft: this.state.timeLeft - 1 },
+
+      () => {
+        if (this.state.timeLeft === 0) {
+          this.beepSound.play();
         }
-      );
+        if (this.state.timeLeft < 0) {
+          if (this.state.intervalId) clearInterval(this.state.intervalId);
+          this.changeTimerType();
+        }
+      });
+
     }, 1000);
     this.setState({
-      intervalId
-    });
+      intervalId });
+
   }
 
   toggleStartStopTimer() {
@@ -133,8 +133,8 @@ class App extends React.Component {
       clearInterval(this.state.intervalId);
       this.setState({
         isTimerRunning: false,
-        intervalId: ""
-      });
+        intervalId: "" });
+
     }
   }
 
@@ -147,57 +147,57 @@ class App extends React.Component {
   }
 
   render() {
-    let stopStartTimer = this.state.isTimerRunning
-      ? "fa fa-pause"
-      : "fa fa-play";
+    let stopStartTimer = this.state.isTimerRunning ?
+    "fa fa-pause" :
+    "fa fa-play";
 
-    return (
-      <div className="clock-container">
-        <Timer
-          timeLeft={this.clockify()}
-          timerType={this.state.timerType}
-          resetTimer={this.resetTimer}
-          stopStartTimer={stopStartTimer}
-          toggleStartStopTimer={this.toggleStartStopTimer}
-        />
-        <div className="length-container">
-          <div className="break-container">
-            <SetTimerLength
-              timerLabelId="break-label"
-              timerLabel="Break Length"
-              timerLen={this.state.breakLen}
-              timerLenId="break-length"
-              decTimerId="break-decrement"
-              handleDecrementTimer={this.handleDecrementBreak}
-              incTimerId="break-increment"
-              handleIncrementTimer={this.handleIncrementBreak}
-            />
-          </div>
-          <div className="session-container">
-            <SetTimerLength
-              timerLabelId="session-label"
-              timerLabel="Session Length"
-              timerLen={this.state.sessionLen}
-              timerLenId="session-length"
-              decTimerId="session-decrement"
-              handleDecrementTimer={this.handleDecrementSession}
-              incTimerId="session-increment"
-              handleIncrementTimer={this.handleIncrementSession}
-            />
-          </div>
-        </div>
-        <audio
-          id="beep"
-          load="auto"
-          ref={(audio) => {
-            this.beepSound = audio;
-          }}
-          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
-        ></audio>
-      </div>
-    );
-  }
-}
+    return /*#__PURE__*/(
+      React.createElement("div", { className: "clock-container" }, /*#__PURE__*/
+      React.createElement(Timer, {
+        timeLeft: this.clockify(),
+        timerType: this.state.timerType,
+        resetTimer: this.resetTimer,
+        stopStartTimer: stopStartTimer,
+        toggleStartStopTimer: this.toggleStartStopTimer }), /*#__PURE__*/
+
+      React.createElement("div", { className: "length-container" }, /*#__PURE__*/
+      React.createElement("div", { className: "break-container" }, /*#__PURE__*/
+      React.createElement(SetTimerLength, {
+        timerLabelId: "break-label",
+        timerLabel: "Break Length",
+        timerLen: this.state.breakLen,
+        timerLenId: "break-length",
+        decTimerId: "break-decrement",
+        handleDecrementTimer: this.handleDecrementBreak,
+        incTimerId: "break-increment",
+        handleIncrementTimer: this.handleIncrementBreak })), /*#__PURE__*/
+
+
+      React.createElement("div", { className: "session-container" }, /*#__PURE__*/
+      React.createElement(SetTimerLength, {
+        timerLabelId: "session-label",
+        timerLabel: "Session Length",
+        timerLen: this.state.sessionLen,
+        timerLenId: "session-length",
+        decTimerId: "session-decrement",
+        handleDecrementTimer: this.handleDecrementSession,
+        incTimerId: "session-increment",
+        handleIncrementTimer: this.handleIncrementSession }))), /*#__PURE__*/
+
+
+
+      React.createElement("audio", {
+        id: "beep",
+        load: "auto",
+        ref: audio => {
+          this.beepSound = audio;
+        },
+        src: "https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" })));
+
+
+
+  }}
+
 
 class SetTimerLength extends React.Component {
   constructor(props) {
@@ -207,37 +207,37 @@ class SetTimerLength extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div id={this.props.timerLabelId}>{this.props.timerLabel}</div>
-        <span id={this.props.timerLenId} className="timer-length">
-          {this.props.timerLen}
-        </span>
-        <div className="inc-dec-btn-container">
-          <button
-            ref={this.buttonRefInc}
-            className="inc-arrow"
-            onClick={() => {
-              this.props.handleIncrementTimer();
-              this.buttonRefInc.current.blur();
-            }}
-          >
-            <i id={this.props.incTimerId} className="fa fa-arrow-up"></i>
-          </button>
-          <button
-            ref={this.buttonRefDec}
-            onClick={() => {
-              this.props.handleDecrementTimer();
-              this.buttonRefDec.current.blur();
-            }}
-          >
-            <i id={this.props.decTimerId} className="fa fa-arrow-down"></i>
-          </button>
-        </div>
-      </div>
-    );
-  }
-}
+    return /*#__PURE__*/(
+      React.createElement("div", null, /*#__PURE__*/
+      React.createElement("div", { id: this.props.timerLabelId }, this.props.timerLabel), /*#__PURE__*/
+      React.createElement("span", { id: this.props.timerLenId, className: "timer-length" },
+      this.props.timerLen), /*#__PURE__*/
+
+      React.createElement("div", { className: "inc-dec-btn-container" }, /*#__PURE__*/
+      React.createElement("button", {
+        ref: this.buttonRefInc,
+        className: "inc-arrow",
+        onClick: () => {
+          this.props.handleIncrementTimer();
+          this.buttonRefInc.current.blur();
+        } }, /*#__PURE__*/
+
+      React.createElement("i", { id: this.props.incTimerId, className: "fa fa-arrow-up" })), /*#__PURE__*/
+
+      React.createElement("button", {
+        ref: this.buttonRefDec,
+        onClick: () => {
+          this.props.handleDecrementTimer();
+          this.buttonRefDec.current.blur();
+        } }, /*#__PURE__*/
+
+      React.createElement("i", { id: this.props.decTimerId, className: "fa fa-arrow-down" })))));
+
+
+
+
+  }}
+
 
 class Timer extends React.Component {
   constructor(props) {
@@ -247,38 +247,37 @@ class Timer extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div id="time-left">{this.props.timeLeft}</div>
-        <div id="display-controls">
-          <div id="timer-label">{this.props.timerType}</div>
-          <div id="timer-ssr">
-            <button
-              ref={this.buttonRefStartStop}
-              id="start-stop"
-              onClick={() => {
-                this.props.toggleStartStopTimer();
-                this.buttonRefStartStop.current.blur();
-              }}
-            >
-              <i className={this.props.stopStartTimer} aria-hidden="true"></i>
-            </button>
-            <button
-              ref={this.buttonRefReset}
-              id="reset"
-              onClick={() => {
-                this.props.resetTimer();
-                this.buttonRefReset.current.blur();
-              }}
-            >
-              <i className="fa fa-refresh" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+    return /*#__PURE__*/(
+      React.createElement("div", null, /*#__PURE__*/
+      React.createElement("div", { id: "time-left" }, this.props.timeLeft), /*#__PURE__*/
+      React.createElement("div", { id: "display-controls" }, /*#__PURE__*/
+      React.createElement("div", { id: "timer-label" }, this.props.timerType), /*#__PURE__*/
+      React.createElement("div", { id: "timer-ssr" }, /*#__PURE__*/
+      React.createElement("button", {
+        ref: this.buttonRefStartStop,
+        id: "start-stop",
+        onClick: () => {
+          this.props.toggleStartStopTimer();
+          this.buttonRefStartStop.current.blur();
+        } }, /*#__PURE__*/
 
-ReactDOM.render(<App />, document.getElementById("root"));
+      React.createElement("i", { className: this.props.stopStartTimer, "aria-hidden": "true" })), /*#__PURE__*/
 
+      React.createElement("button", {
+        ref: this.buttonRefReset,
+        id: "reset",
+        onClick: () => {
+          this.props.resetTimer();
+          this.buttonRefReset.current.blur();
+        } }, /*#__PURE__*/
+
+      React.createElement("i", { className: "fa fa-refresh", "aria-hidden": "true" }))))));
+
+
+
+
+
+  }}
+
+
+ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById("root"));
